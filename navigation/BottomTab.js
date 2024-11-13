@@ -25,7 +25,7 @@ const icons = {
 
 export default function BottomTab() {
   return (
-    <NavigationContainer>
+    
       <Tab.Navigator>
         <Tab.Screen
           name={HOME}
@@ -49,6 +49,6 @@ export default function BottomTab() {
           />
 
       </Tab.Navigator>
-    </NavigationContainer>
+    
   );
 }
