@@ -1,13 +1,12 @@
 import Home from '../screens/home/Home'
-import Settings from '../screens/settings/Settings'
 import InvestingHint from '../screens/investing_hint/InvestingHint'
 import AddIncome from '../screens/income_expense/AddIncome'
 import CurrencyConverter from '../screens/currency_converter/CurrencyConverter'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from "@react-navigation/native";
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 
-const Tab = createBottomTabNavigator();
+
+const Tab = createMaterialBottomTabNavigator();
 
 const HOME = 'Home';
 const CURRENCY_CONVERT = 'Currency';
@@ -23,10 +22,14 @@ const icons = {
   [SETTINGS]: 'cog'
 }
 
-export default function BottomTab() {
+export default function BottomTab() {//Something causes a warning (Warning: A props object containing a "key" prop is being spread into JSX:)
+
   return (
     
-      <Tab.Navigator>
+      <Tab.Navigator
+        initialRouteName={HOME}
+        backBehavior="history"
+      >
         <Tab.Screen
           name={HOME}
           component={Home}
