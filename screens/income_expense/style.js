@@ -1,10 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from "react-native";
 
-export default function AddIncome() {
-  return (
-    <View style={{flex: 1}}>
-      <Text>Here is basic Currency convert</Text>
+const styles = StyleSheet.create({
+    container:{
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center', 
+        marginTop:100
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems:'center',
+        padding:10,
+    
+    },
 
-    </View>
-  );
-}
+
+  });
+
+  export default styles;
+  
