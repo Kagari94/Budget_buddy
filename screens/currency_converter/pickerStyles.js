@@ -1,3 +1,4 @@
+// screens/currency_converter/pickerStyles.js
 
 import { StyleSheet } from "react-native";
 
@@ -10,7 +11,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 8,
     paddingRight: 30, 
     marginBottom: 20,
-
+   
   },
   inputAndroid: {
     fontSize: 18,
@@ -20,7 +21,6 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 8,
     paddingRight: 30, 
     marginBottom: 20,
-
   },
 });
 
