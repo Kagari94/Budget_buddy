@@ -1,28 +1,30 @@
-
 import React, { useState, useEffect } from "react";
 import {
-  View,
   Alert,
   ActivityIndicator,
   TouchableWithoutFeedback,
   Keyboard,
-  Dimensions,
   ScrollView,
 } from "react-native";
 import {
   Text,
-  TextInput,
-  Button,
-  Card,
-  IconButton,
   useTheme,
 } from "react-native-paper";
-import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
-import styles from "./styles.js";
-import pickerSelectStyles from "./pickerStyles.js";
-import { LineChart } from "react-native-chart-kit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import styles from "./styles.js";
+
+import {
+  CurrencyInput,
+  PeriodSelector,
+  CurrencyPicker,
+  SwapButton,
+  ConvertButton,
+  ConversionResult,
+  HistoricalChart,
+  ErrorMessage,
+} from "../../components/currency_converter_components";
 
 const ConverterScreen = () => {
   const { colors } = useTheme();
@@ -305,83 +307,6 @@ const ConverterScreen = () => {
     setTargetCurrency(baseCurrency);
   };
 
-  // picker styles use theme colors
-  const customizedPickerStyles = {
-    ...pickerSelectStyles,
-    iconContainer: {
-      top: 15,
-      right: 10,
-    },
-    inputIOS: {
-      ...pickerSelectStyles.inputIOS,
-      color: colors.onBackground,
-      backgroundColor: colors.surface,
-      borderColor: colors.placeholder || "#888888",
-      paddingLeft: 60,
-    },
-    inputAndroid: {
-      ...pickerSelectStyles.inputAndroid,
-      color: colors.onBackground,
-      backgroundColor: colors.surface,
-      borderColor: colors.placeholder || "#888888",
-      paddingLeft: 60,
-    },
-  };
-
-  // Prepare chart data
-  const chartData = {
-    labels: historicalRates.map((item, index) => {
-      const date = new Date(item.date);
-      let label = "";
-      const period = selectedPeriod || "1M";
-      switch (period) {
-        case "1W":
-        case "1M":
-          label = `${date.getMonth() + 1}/${date.getDate()}`;
-          break;
-        case "6M":
-        case "1Y":
-          label = `${date.getMonth() + 1}/${date.getFullYear()}`;
-          break;
-        default:
-          label = item.date;
-      }
-      // Show only every nth label to avoid clutter
-      const totalLabels = historicalRates.length;
-      const maxLabels = 5; 
-      if (index % Math.ceil(totalLabels / maxLabels) === 0) {
-        return label;
-      } else {
-        return "";
-      }
-    }),
-    datasets: [
-      {
-        data: historicalRates.map((item) => item.rate),
-        color: (opacity = 1) => colors.primary, // Use theme primary color
-        strokeWidth: 2,
-      },
-    ],
-  };
-
-  const screenWidth = Dimensions.get("window").width - 40; 
-
-  const chartConfig = {
-    backgroundGradientFrom: colors.background,
-    backgroundGradientTo: colors.background,
-    color: (opacity = 1) => colors.primary, // Use theme primary color
-    labelColor: (opacity = 1) => colors.onBackground, // Use theme text color
-    decimalPlaces: 4,
-    propsForDots: {
-      r: "2",
-      strokeWidth: "1",
-      stroke: colors.primary,
-    },
-    propsForBackgroundLines: {
-      stroke: "#444",
-    },
-  };
-
   // Function to format large numbers so they fit into the screen
   const formatLargeNumber = (num) => {
     if (Math.abs(num) >= 1.0e9) {
@@ -407,120 +332,54 @@ const ConverterScreen = () => {
           Currency Converter
         </Text>
 
-        <TextInput
-          label="Enter Amount"
-          mode="outlined"
-          keyboardType="numeric"
-          value={amount}
-          onChangeText={setAmount}
-          style={styles.input}
-          left={<TextInput.Icon name="currency-usd" color={colors.onBackground} />}
-          theme={{ colors: { text: colors.onBackground, placeholder: colors.placeholder } }}
+        <CurrencyInput amount={amount} setAmount={setAmount} />
+
+        <PeriodSelector
+          periods={periods}
+          selectedPeriod={selectedPeriod}
+          setSelectedPeriod={setSelectedPeriod}
         />
 
-        <View style={styles.periodContainer}>
-          {periods.map((period) => (
-            <Button
-              key={period.value}
-              mode={selectedPeriod === period.value ? "contained" : "outlined"}
-              onPress={() => setSelectedPeriod(period.value)}
-              style={[
-                styles.periodButton,
-                selectedPeriod === period.value && {
-                  backgroundColor: colors.primary,
-                },
-              ]}
-              labelStyle={{
-                fontSize: 14,
-                textAlign: "center",
-                color:
-                  selectedPeriod === period.value
-                    ? colors.onPrimary
-                    : colors.primary,
-              }}
-            >
-              {period.label}
-            </Button>
-          ))}
-        </View>
-
-        <RNPickerSelect
-          onValueChange={(value) => setBaseCurrency(value)}
-          items={currencies}
+        <CurrencyPicker
           value={baseCurrency}
-          style={customizedPickerStyles}
-          placeholder={{ label: "Select Base Currency", value: null }}
-          Icon={() => (
-            <IconButton icon="chevron-down" size={24} color={colors.onBackground} />
-          )}
-        />
-
-        <RNPickerSelect
-          onValueChange={(value) => setTargetCurrency(value)}
+          onValueChange={setBaseCurrency}
           items={currencies}
-          value={targetCurrency}
-          style={customizedPickerStyles}
-          placeholder={{ label: "Select Target Currency", value: null }}
-          Icon={() => (
-            <IconButton icon="chevron-down" size={24} color={colors.onBackground} />
-          )}
+          placeholder={{ label: "Select Base Currency", value: null }}
         />
 
-        <Button
-          mode="contained"
-          onPress={swapCurrencies}
-          icon="swap-horizontal"
-          style={styles.swapButton}
-          contentStyle={{ flexDirection: "row-reverse" }}
-        >
-          Swap
-        </Button>
+        <CurrencyPicker
+          value={targetCurrency}
+          onValueChange={setTargetCurrency}
+          items={currencies}
+          placeholder={{ label: "Select Target Currency", value: null }}
+        />
 
-        <Button
-          mode="contained"
-          onPress={handleConvert}
-          loading={loading}
-          disabled={loading}
-          style={styles.button}
-        >
-          Convert
-        </Button>
+        <SwapButton swapCurrencies={swapCurrencies} />
+
+        <ConvertButton handleConvert={handleConvert} loading={loading} />
 
         {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
         {convertedAmount && (
-          <Card style={[styles.resultCard, { backgroundColor: colors.surface }]}>
-            <Card.Content>
-              <Text style={[styles.result, { color: colors.primary }]}>
-                {amount} {baseCurrency} = {convertedAmount} {targetCurrency}
-              </Text>
-            </Card.Content>
-          </Card>
+          <ConversionResult
+            amount={amount}
+            baseCurrency={baseCurrency}
+            convertedAmount={convertedAmount}
+            targetCurrency={targetCurrency}
+          />
         )}
 
         {historicalRates && historicalRates.length > 0 && (
-          <View style={styles.chartContainer}>
-            <Text style={[styles.chartTitle, { color: colors.onBackground }]}>
-              {baseCurrency} to {targetCurrency} Rate
-            </Text>
-            <LineChart
-              data={chartData}
-              width={screenWidth}
-              height={220}
-              chartConfig={chartConfig}
-              bezier
-              style={styles.chartStyle}
-              fromZero={false}
-              formatYLabel={(yValue) => formatLargeNumber(parseFloat(yValue))}
-            />
-          </View>
+          <HistoricalChart
+            baseCurrency={baseCurrency}
+            targetCurrency={targetCurrency}
+            historicalRates={historicalRates}
+            selectedPeriod={selectedPeriod}
+            formatLargeNumber={formatLargeNumber}
+          />
         )}
 
-        {error ? (
-          <Text style={[styles.errorText, { color: colors.error }]}>
-            {error}
-          </Text>
-        ) : null}
+        {error ? <ErrorMessage error={error} /> : null}
       </ScrollView>
     </TouchableWithoutFeedback>
   );
