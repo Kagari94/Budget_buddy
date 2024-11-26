@@ -3,6 +3,7 @@ import { View, Text} from "react-native";
 import { Calendar } from "react-native-calendars";
 import { TextInput, Button } from "react-native-paper";
 import styles from "./style";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -11,6 +12,30 @@ const Income = ({setComponent}) => {
     const [date, setDate] = useState(null);  //Päivämäärä
     const[income,setIncome] = useState();    //Tulot
     const[description, setDescription] = useState();  //Palkka, lahja, pullonpalautus?
+
+    const saveIncome = async (newIncome) => {
+        try{
+            const prevIncome = await AsyncStorage.getItem('Income');
+            const income = prevIncome ? JSON.parse(prevIncome) : [];
+            income.push(newIncome);
+            await AsyncStorage.setItem('Income', JSON.stringify(income));
+            console.log('Income saved...');
+
+        }catch (error) {
+            console.log('Failed', error);
+            
+        }
+    }
+
+    const addIncome = () => {
+        const newIncome = { 
+            date: date.dateString,
+            income,
+            description,
+            };
+        saveIncome(newIncome);
+    }
+
 
     function dateSelected(day) {
         setDate(day);
@@ -41,7 +66,7 @@ const Income = ({setComponent}) => {
                 style={styles.addButton}
                 icon="plus"
                 mode="outlined"
-                onPress={() => console.log(' Income: ' + income + ' Description: ' + description)}>
+                onPress={addIncome}>
                 Add
             </Button>
 
