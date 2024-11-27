@@ -33,22 +33,22 @@ export default function BottomTab() {//Something causes a warning (Warning: A pr
         <Tab.Screen
           name={HOME}
           component={Home}
-          options={{tabBarIcon: ()=> <MaterialCommunityIcons name={icons[HOME]} size={20}/>}}
+          options={{tabBarIcon: ()=> <MaterialCommunityIcons name={icons[HOME]} size={20} color={"white"}/>}}//Add dark and light themeing!
           />
           <Tab.Screen
           name={INCOME_EXPENSE}
           component={AddIncome}
-          options={{tabBarIcon: ()=> <MaterialCommunityIcons name={icons[INCOME_EXPENSE]} size={20}/>}}
+          options={{tabBarIcon: ()=> <MaterialCommunityIcons name={icons[INCOME_EXPENSE]} size={20} color={"white"}/>}}
           />
           <Tab.Screen
           name={CURRENCY_CONVERT}
           component={CurrencyConverter}
-          options={{tabBarIcon: ()=> <MaterialCommunityIcons name={icons[CURRENCY_CONVERT]} size={20}/>}}
+          options={{tabBarIcon: ()=> <MaterialCommunityIcons name={icons[CURRENCY_CONVERT]} size={20} color={"white"}/>}}
           />
           <Tab.Screen
           name={INVESTING_HINT}
           component={InvestingHint}
-          options={{tabBarIcon: ()=> <MaterialCommunityIcons name={icons[INVESTING_HINT]} size={20}/>}}
+          options={{tabBarIcon: ()=> <MaterialCommunityIcons name={icons[INVESTING_HINT]} size={20} color={"white"}/>}}
           />
 
       </Tab.Navigator>

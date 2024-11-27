@@ -8,6 +8,7 @@ export const Data = [//Temp data
     { id: 6, title: 'Savings', expense: 51},
     { id: 7, title: 'Bills', expense: 140},
     { id: 8, title: 'Others', expense: 100},
+    { id: 9, title: 'Others', expense: 122}
 ]
 
 export const expense = [ // Temp expenses
