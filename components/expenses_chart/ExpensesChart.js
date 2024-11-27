@@ -20,57 +20,57 @@ const data = [
     {
       name: DATA[1].title,
       expense: DATA[1].expense,
-      color: "rgba(131, 167, 234, 1)",
-      legendFontColor: "#7F7F7F",
+      color: "rgb(71, 12, 122)",
+      legendFontColor: "#ffffff",
       legendFontSize: 15
     },
     {
       name: DATA[2].title,
       expense: DATA[2].expense,
-      color: "pink",
-      legendFontColor: "#7F7F7F",
+      color: "rgb(151, 97, 206)",
+      legendFontColor: "#ffffff",
       legendFontSize: 15
     },
     {
       name: DATA[3].title,
       expense: DATA[3].expense,
-      color: "red",
-      legendFontColor: "#7F7F7F",
+      color: "rgb(154, 147, 250)",
+      legendFontColor: "#ffffff",
       legendFontSize: 15
     },
     {
       name: DATA[4].title,
       expense: DATA[4].expense,
-      color: "rgb(0, 255, 136)",
-      legendFontColor: "#7F7F7F",
+      color: "rgb(238, 179, 228)",
+      legendFontColor: "#ffffff",
       legendFontSize: 15
     },
     {
       name: DATA[5].title,
       expense: DATA[5].expense,
-      color: "rgb(217, 255, 0)",
-      legendFontColor: "#7F7F7F",
+      color: "rgb(220, 184, 255)",
+      legendFontColor: "#ffffff",
       legendFontSize: 15
     },
     {
       name: DATA[6].title,
       expense: DATA[6].expense,
-      color: "rgb(255, 102, 0)",
-      legendFontColor: "#7F7F7F",
+      color: "rgba(131, 167, 234, 1)",
+      legendFontColor: "#ffffff",
       legendFontSize: 15
     },
     {
       name: DATA[7].title,
       expense: DATA[7].expense,
-      color: "rgb(255, 0, 221)",
-      legendFontColor: "#7F7F7F",
+      color: "rgb(169, 236, 227)",
+      legendFontColor: "#ffffff",
       legendFontSize: 15
     },
     {
       name: DATA[8].title,
       expense: DATA[8].expense,
-      color: "rgb(0, 255, 221)",
-      legendFontColor: "#7F7F7F",
+      color: "rgb(203, 238, 171)",
+      legendFontColor: "#ffffff",
       legendFontSize: 15
     }
   ];

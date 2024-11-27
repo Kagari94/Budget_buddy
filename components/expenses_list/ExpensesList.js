@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { expense as DATA } from '../../assets/DATA/Data'
+import React, { useContext, useEffect, useState } from 'react';
 import {
   FlatList,
   Text,
   View,
   TouchableOpacity,
 } from 'react-native';
-import { styles } from "./style";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-
+import { SelectedID } from '../../context/sortingContext';
+import { expense as DATA } from '../../assets/DATA/Data'
+import { SortByCategory } from '../sorting/Sorting';
+import { styles } from "./style";
 
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
@@ -23,11 +24,21 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 );
 
 const ExpensesList = () => {
+
+  const [selectedCategory] = useContext(SelectedID);
+
   const [selectedId, setSelectedId] = useState();
+  const [tempList, setTempList] = useState(DATA);
+
+  useEffect(() => {
+    //console.log("Did fire")
+    const sortedList = SortByCategory(selectedCategory);
+    setTempList(sortedList);
+  },[selectedCategory])
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? 'lime' : 'green';
-    const color = item.id === selectedId ? 'white' : 'black';
+    const backgroundColor = item.id === selectedId ? '#663399' : '#665a6f';
+    const color = item.id === selectedId ? 'white' : 'white';// Change this when you have dark and light theme!
 
     return (
       <Item
@@ -43,7 +54,7 @@ const ExpensesList = () => {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={DATA}
+          data={tempList}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           extraData={selectedId}
