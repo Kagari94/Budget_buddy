@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { View, Text} from "react-native";
+import { View, Text, Alert} from "react-native";
 import { Calendar } from "react-native-calendars";
 import { TextInput, Button } from "react-native-paper";
 import SelectCategory from "./SelectCategory";
@@ -32,6 +32,24 @@ const Expenses = ({setComponent}) => {
     }
 
     const addExpense = () => {
+
+        if(!date){
+            Alert.alert(' You need select a date ')
+            return;
+        }
+
+        
+        if(!expense){
+            Alert.alert(' you need to set expense')
+            return;
+        }
+
+        
+        if(!selectedCategory){
+            Alert.alert(' you need to select category ')
+            return;
+        }
+
         const newExpense = { 
             date: date.dateString,
             expense,
@@ -39,6 +57,8 @@ const Expenses = ({setComponent}) => {
             category: selectedCategory 
         };
         saveExpense(newExpense);
+        console.log('Expense added');
+        
     }
 
 
@@ -64,7 +84,7 @@ const Expenses = ({setComponent}) => {
                 style={styles.textInput}
                 mode="outlined"
                 label={'Expense'}
-                keyboardType="Numeric"
+                keyboardType="numeric"
                 onChangeText={expense => setExpense(expense)}
             />
             <TextInput
