@@ -21,25 +21,29 @@ const AddIncome = () => {
 
 
   return(
-    <View>
+    <View style={styles.container}>
+
       
 
     {component ? ( 
     renderComponent() ) : (
-      <View style={styles.container}>
 
-        <Text style={styles.text}>Add expense or income</Text>
-        
+      <View >
+        <View>
+          <Text style={styles.text}>ADD INCOME OR EXPENSE</Text>
+        </View>
         <View style={styles.buttonRow}>
           <IconButton
             icon="plus"
-            size={64}
+            size={86}
             onPress={() => setComponent('Income')}
+            iconColor='green'
           />
           <IconButton
             icon="minus"
-            size={64}
+            size={86}
             onPress={() => setComponent('Expenses')}
+            iconColor='red'
           />
         </View>
       </View>
