@@ -5,7 +5,7 @@ import StackNav from './navigation/StackNav';
 
 export default function App() {
   return (
-    <PaperProvider theme={MD3DarkTheme}>{/*Get a boolean for changing Dark to light */}
+    <PaperProvider theme={MD3LightTheme}>{/*Get a boolean for changing Dark to light */}
       <StackNav/> 
     </PaperProvider>
   );
