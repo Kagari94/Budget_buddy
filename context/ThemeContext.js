@@ -3,18 +3,19 @@ import { LightTheme, DarkTheme } from '../theme'; // Import themes from theme.js
 
 export const ThemeContext = createContext();
 
-export const ThemeProvider = ({ children }) => {
-  const [isDarkTheme, setIsDarkTheme] = useState(false); // Initial theme is light
 
-  const theme = isDarkTheme ? DarkTheme : LightTheme; // Choose theme based on state
+// export const ThemeProvider = ({ children }) => {
+//   const [isDarkTheme, setIsDarkTheme] = useState(false); // Initial theme is light
 
-  const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme); // Toggle between light and dark themes
-  };
+//   const theme = isDarkTheme ? DarkTheme : LightTheme; // Choose theme based on state
 
-  return (
-    <ThemeContext.Provider value={{ theme, isDarkTheme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
+//   const toggleTheme = () => {
+//     setIsDarkTheme(!isDarkTheme); // Toggle between light and dark themes
+//   };
+
+//   return (
+//     <ThemeContext.Provider value={{ theme, isDarkTheme, toggleTheme }}>
+//       {children}
+//     </ThemeContext.Provider>
+//   );
+// };
