@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { IconButton } from 'react-native-paper';
 import { FlatList } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from "./style";
+import { SelectedID } from '../../context/sortingContext';
 
 const buttons = [//Icon list for now
-    { id: 'food', icon: 'food', color: 'black', size: 20 },
-    { id: 'living', icon: 'currency-eur', color: 'black', size: 20 },
-    { id: 'transport', icon: 'bus', color: 'black', size: 20 },
-    { id: 'hobbies', icon: 'teddy-bear', color: 'black', size: 20 },
-    { id: 'travel', icon: 'bag-suitcase-outline', color: 'black', size: 20 },
-    { id: 'savings', icon: 'teddy-bear', color: 'black', size: 20 },
-    { id: 'others', icon: 'asterisk', color: 'black', size: 20 },
+    {id: 'All', icon: 'all-inclusive', color: 'black', size: 20},
+    { id: 'Food', icon: 'food', color: 'black', size: 20 },
+    { id: 'Living', icon: 'currency-eur', color: 'black', size: 20 },
+    { id: 'Transport', icon: 'bus', color: 'black', size: 20 },
+    { id: 'Hobbies', icon: 'teddy-bear', color: 'black', size: 20 },
+    { id: 'Travel', icon: 'bag-suitcase-outline', color: 'black', size: 20 },
+    { id: 'Savings', icon: 'teddy-bear', color: 'black', size: 20 },
+    { id: 'Others', icon: 'asterisk', color: 'black', size: 20 },
 ]
 
 const Item = ({ item, onPress, backgroundColor, color }) => {
@@ -27,10 +29,10 @@ const Item = ({ item, onPress, backgroundColor, color }) => {
 
 
 export default function ButtonGroup() {
-    const [selectedId, setSelectedId] = useState('food');
+    const [selectedId, setSelectedId] = useContext(SelectedID);//Bring this to conext
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';//Change the colors when theme has been picked
+        const backgroundColor = item.id === selectedId ? '#663399' : '#665a6f';//Change the colors when theme has been picked
         const color = item.id === selectedId ? 'white' : 'black';
 
         return (
