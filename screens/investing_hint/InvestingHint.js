@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Text, TextInput, View, Button, Image, ScrollView, Alert } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { styles } from './style';
+import { TouchableOpacity } from 'react-native';
+import investingImage from '../../assets/interest.png';
+
+
 
 export default function InvestingHint() {
   const [showCalculator, setShowCalculator] = useState(false);
@@ -32,18 +36,22 @@ export default function InvestingHint() {
       Alert.alert('Invalid Input', 'Please fix the errors before calculating.');
       return;
     }
-
+  
+    const annualRate = parseFloat(interestRate) / 100;
+    const monthlyRate = annualRate / 12;
     const months = investmentYears * 12;
-    const monthlyRate = parseFloat(interestRate) / 100 / 12;
-
-    let total = parseFloat(initialAmount);
-    for (let i = 0; i < months; i++) {
-      total = total * (1 + monthlyRate) + parseFloat(monthlyInvestment);
-    }
-
-    const totalInvested = parseFloat(initialAmount) + parseFloat(monthlyInvestment) * months;
+  
+    const initial = parseFloat(initialAmount);
+    const monthly = parseFloat(monthlyInvestment);
+  
+    // Compound interest formula
+    const compoundedInitial = initial * Math.pow(1 + monthlyRate, months);
+    const compoundedMonthly = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+  
+    const total = compoundedInitial + compoundedMonthly;
+    const totalInvested = initial + (monthly * months);
     const interestEarned = total - totalInvested;
-
+  
     setResult({
       finalAmount: total.toFixed(2),
       totalInvested: totalInvested.toFixed(2),
@@ -56,19 +64,26 @@ export default function InvestingHint() {
       <Text style={styles.header}>Welcome to Investing Tips</Text>
       <Text style={styles.description}>
         Investing is one of the best ways to grow your wealth over time. Here, you'll find some tips and a handy calculator to help you understand how compound interest can work for you.
+        Index funds offer a straightforward, cost-effective way to invest in the financial markets, making them a popular choice for both novice and experienced investors. Their low costs, diversification, and consistent performance make them an attractive option for long-term growth. In this picture you can clearly see, the earlier you begin, the more time compound interest has to work its magic. By starting with smaller contributions earlier in life, you can achieve similar or even greater returns than if you start saving larger amounts later on. This demonstrates how consistent, early investments, especially in low-cost, diversified index funds, can lead to substantial wealth accumulation over time.
       </Text>
       <Image
-        source={{ uri: 'https://example.com/investing-image.jpg' }} // Replace with your image URL
+        source={require('../../assets/interest.png')}
         style={styles.image}
       />
+
       <Text style={styles.description}>
-        Did you know? Even small monthly investments can grow into significant wealth over time thanks to compound interest.
+        You can get started with as little as €10/month, but with a larger savings amount, you will accumulate your wealth even faster. If you have the opportunity to save and want a return on your money, start Monthly Savings into a fund.
+        You can use the calculator below to try out how the interest-for-interest phenomenon works
       </Text>
 
-      <Button
-        title={showCalculator ? 'Hide Calculator' : 'Show Calculator'}
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => setShowCalculator(!showCalculator)}
-      />
+      >
+        <Text style={styles.buttonText}>
+          {showCalculator ? 'Hide Calculator' : 'Show Calculator'}
+        </Text>
+      </TouchableOpacity>
 
       {showCalculator && (
         <View style={styles.calculator}>
@@ -78,7 +93,7 @@ export default function InvestingHint() {
             <Text>Start Capital (€):</Text>
             <TextInput
               style={styles.input}
-              keyboardType="default" // Use default to allow all characters
+              keyboardType="decimal-pad" 
               value={initialAmount}
               onChangeText={(text) => validateInput(text, setInitialAmount)}
             />
@@ -88,7 +103,7 @@ export default function InvestingHint() {
             <Text>Monthly Investment (€):</Text>
             <TextInput
               style={styles.input}
-              keyboardType="default" // Use default to allow all characters
+              keyboardType="decimal-pad" 
               value={monthlyInvestment}
               onChangeText={(text) => validateInput(text, setMonthlyInvestment)}
             />
@@ -98,7 +113,7 @@ export default function InvestingHint() {
             <Text>Expected Rate of Return (%):</Text>
             <TextInput
               style={styles.input}
-              keyboardType="default" // Use default to allow all characters
+              keyboardType="decimal-pad" 
               value={interestRate}
               onChangeText={(text) => validateInput(text, setInterestRate)}
             />
@@ -119,7 +134,9 @@ export default function InvestingHint() {
 
           {error ? <Text style={styles.error}>{error}</Text> : null}
 
-          <Button title="Calculate" onPress={calculateCompoundInterest} />
+          <TouchableOpacity style={styles.button} onPress={calculateCompoundInterest}>
+            <Text style={styles.buttonText}>CALCULATE</Text>
+          </TouchableOpacity>
 
           <View style={styles.resultGroup}>
             <Text>Capital at the end of the period: {result.finalAmount}€</Text>
