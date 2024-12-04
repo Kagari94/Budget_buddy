@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({//Style to its own file
         padding: 20,
         width: width - 35,
         marginVertical: 5,
+        borderRadius: 5
     },
     title: {
         fontSize: 14,

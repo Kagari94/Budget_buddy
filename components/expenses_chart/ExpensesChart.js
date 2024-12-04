@@ -16,7 +16,7 @@ Bills
 Others
 */
 
-const data = [
+const data = [//Maybe make it so we can call items from function
     {
       name: DATA[1].title,
       expense: DATA[1].expense,

@@ -4,17 +4,7 @@ import { FlatList } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from "./style";
 import { SelectedID } from '../../context/sortingContext';
-
-const buttons = [//Icon list for now
-    {id: 'All', icon: 'all-inclusive', color: 'black', size: 20},
-    { id: 'Food', icon: 'food', color: 'black', size: 20 },
-    { id: 'Living', icon: 'currency-eur', color: 'black', size: 20 },
-    { id: 'Transport', icon: 'bus', color: 'black', size: 20 },
-    { id: 'Hobbies', icon: 'teddy-bear', color: 'black', size: 20 },
-    { id: 'Travel', icon: 'bag-suitcase-outline', color: 'black', size: 20 },
-    { id: 'Savings', icon: 'teddy-bear', color: 'black', size: 20 },
-    { id: 'Others', icon: 'asterisk', color: 'black', size: 20 },
-]
+import { buttons } from '../category_icons/CategoryIcons'//Use buttons from different file, icons are there too
 
 const Item = ({ item, onPress, backgroundColor, color }) => {
     return (

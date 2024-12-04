@@ -5,17 +5,24 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { SelectedID } from '../../context/sortingContext';
-import { expense as DATA } from '../../assets/DATA/Data'
+import { buttons } from '../category_icons/CategoryIcons'
 import { SortByCategory } from '../sorting/Sorting';
 import { styles } from "./style";
 
 
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
+const Item = ({ item, onPress, backgroundColor, textColor, icon }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
+    <View style={styles.titleview}>{console.log(item.category)}
+      <MaterialCommunityIcons name={icon} size={20} color={"white"}/>
+    </View>
+    <View style={styles.titleview}>{console.log(item.category)}
+    <Text style={[styles.title, { color: textColor }]}>{item.date}</Text>
+    </View>
     <View style={styles.titleview}>
-      <Text style={[styles.title, { color: textColor }]}>{item.title}</Text>
+      <Text style={[styles.title, { color: textColor }]}>{item.description}</Text>
     </View>
     <View style={styles.expenseview}>
       <Text style={[styles.title, { color: textColor }]}>{item.expense}</Text>
@@ -28,21 +35,26 @@ const ExpensesList = () => {
   const [selectedCategory] = useContext(SelectedID);
 
   const [selectedId, setSelectedId] = useState();
-  const [tempList, setTempList] = useState(DATA);
+  const [tempList, setTempList] = useState();
 
   useEffect(() => {
-    //console.log("Did fire")
-    const sortedList = SortByCategory(selectedCategory);
-    setTempList(sortedList);
+    const fetchData = async () => {
+      //console.log("Did fire")
+      const sortedList = await SortByCategory(selectedCategory);
+      setTempList(sortedList);
+      console.log('This is the read list: ',sortedList[0])
+    }
+    fetchData();
   },[selectedCategory])
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#663399' : '#665a6f';
     const color = item.id === selectedId ? 'white' : 'white';// Change this when you have dark and light theme!
-
+    const icon = buttons.find(button => button.id === item.category)?.icon || 'progress-question'; // get the icon from buttons
     return (
       <Item
         item={item}
+        icon={icon}
         onPress={() => setSelectedId(item.id)}
         backgroundColor={backgroundColor}
         textColor={color}

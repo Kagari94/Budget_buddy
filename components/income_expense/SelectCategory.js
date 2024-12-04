@@ -4,13 +4,13 @@ import { IconButton } from "react-native-paper";
 
 const SelectCategory = ({onSelectCategory, selectedCategory}) => {
     const categories = [
-        { id: 'food', icon: 'food', color: '#cfbbfe', size: 20 },
-        { id: 'living', icon: 'currency-eur', color: '#cfbbfe', size: 20 },
-        { id: 'transport', icon: 'bus', color: '#cfbbfe', size: 20 },
-        { id: 'hobbies', icon: 'teddy-bear', color: '#cfbbfe', size: 20 },
-        { id: 'travel', icon: 'bag-suitcase-outline', color: '#cfbbfe', size: 20 },
-        { id: 'savings', icon: 'teddy-bear', color: '#cfbbfe', size: 20 },
-        { id: 'others', icon: 'asterisk', color: '#cfbbfe', size: 20 },
+        { id: 'Food', icon: 'food', color: '#cfbbfe', size: 20 },
+        { id: 'Living', icon: 'currency-eur', color: '#cfbbfe', size: 20 },
+        { id: 'Transport', icon: 'bus', color: '#cfbbfe', size: 20 },
+        { id: 'Hobbies', icon: 'teddy-bear', color: '#cfbbfe', size: 20 },
+        { id: 'Travel', icon: 'bag-suitcase-outline', color: '#cfbbfe', size: 20 },
+        { id: 'Savings', icon: 'teddy-bear', color: '#cfbbfe', size: 20 },
+        { id: 'Others', icon: 'asterisk', color: '#cfbbfe', size: 20 },
     ];
 
     const renderCategory = ({item}) => (
