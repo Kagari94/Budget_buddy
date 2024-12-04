@@ -6,14 +6,11 @@ import {
   Keyboard,
   ScrollView,
 } from "react-native";
-import {
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import styles from "./styles.js";
+import styles from "./styles";
 
 import {
   CurrencyInput,
@@ -27,7 +24,7 @@ import {
 } from "../../components/currency_converter_components";
 
 const ConverterScreen = () => {
-  const { colors } = useTheme();
+  const { colors } = useTheme(); // Access theme colors
 
   const [amount, setAmount] = useState("");
   const [baseCurrency, setBaseCurrency] = useState("EUR");
@@ -328,7 +325,7 @@ const ConverterScreen = () => {
           { backgroundColor: colors.background },
         ]}
       >
-        <Text style={[styles.title, { color: colors.onBackground }]}>
+        <Text style={[styles.title, { color: colors.text }]}>
           Currency Converter
         </Text>
 
@@ -358,7 +355,9 @@ const ConverterScreen = () => {
 
         <ConvertButton handleConvert={handleConvert} loading={loading} />
 
-        {loading && <ActivityIndicator size="large" color={colors.primary} />}
+        {loading && (
+          <ActivityIndicator size="large" color={colors.primary} />
+        )}
 
         {convertedAmount && (
           <ConversionResult

@@ -5,12 +5,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import BottomTab from "./BottomTab";
 import Settings from '../screens/settings/Settings';
+import { ThemeContext } from '../context/ThemeContext';
 
 const Stack = createStackNavigator();
 
 export default function StackNav() {
+    const { theme } = React.useContext(ThemeContext);
     return(
-        <NavigationContainer>
+        <NavigationContainer theme={theme}>
             <Stack.Navigator>
             <Stack.Screen
                 name="Main"

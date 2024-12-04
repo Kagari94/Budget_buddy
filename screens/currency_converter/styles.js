@@ -1,4 +1,3 @@
-// screens/currency_converter/styles.js
 
 import { StyleSheet } from "react-native";
 

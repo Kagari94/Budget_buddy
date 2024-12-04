@@ -1,12 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { MD3LightTheme, MD3DarkTheme, PaperProvider } from 'react-native-paper';
+// App.js
+import React from 'react';
+import { PaperProvider } from 'react-native-paper';
 import StackNav from './navigation/StackNav';
-
+import { ThemeProvider, ThemeContext } from './context/ThemeContext';
 
 export default function App() {
   return (
-    <PaperProvider theme={MD3LightTheme}>{/*Get a boolean for changing Dark to light */}
-      <StackNav/> 
+    <ThemeProvider>
+      <Main />
+    </ThemeProvider>
+  );
+}
+
+function Main() {
+  const { theme } = React.useContext(ThemeContext);
+
+  return (
+    <PaperProvider theme={theme}>
+      <StackNav />
     </PaperProvider>
   );
 }

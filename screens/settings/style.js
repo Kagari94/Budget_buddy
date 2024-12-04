@@ -1,10 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-export default function Settings() {
-  return (
-    <View style={{flex: 1}}>
-      <Text>Here is basic Currency convert</Text>
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 16,
+  },
+});
 
-    </View>
-  );
-}
+export default styles;
