@@ -1,3 +1,4 @@
+// navigation/BottomTab.js
 import React from 'react';
 import { useTheme } from 'react-native-paper';
 import Home from '../screens/home/Home';
@@ -19,7 +20,7 @@ const icons = {
   [HOME]: 'home',
   [INCOME_EXPENSE]: 'wallet-plus',
   [CURRENCY_CONVERT]: 'currency-eur',
-  [INVESTING_HINT]: 'comment-question', // Placeholder icon
+  [INVESTING_HINT]: 'comment-question', // Placeholder-ikoni
   [SETTINGS]: 'cog',
 };
 
@@ -30,9 +31,9 @@ export default function BottomTab() {
     <Tab.Navigator
       initialRouteName={HOME}
       backBehavior="history"
-      barStyle={{ backgroundColor: colors.BottomTab }}
-      activeColor={colors.onBottomTab}
-      inactiveColor={colors.onBottomTab}
+      barStyle={{ backgroundColor: colors.surface }} // Käytä surface väriä taustalle
+      activeColor={colors.primary} // Aktiivinen väri
+      inactiveColor={colors.onSurface} // Ei-aktiivinen väri
     >
       <Tab.Screen
         name={HOME}
@@ -48,11 +49,7 @@ export default function BottomTab() {
         component={AddIncome}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name={icons[INCOME_EXPENSE]}
-              size={20}
-              color={color}
-            />
+            <MaterialCommunityIcons name={icons[INCOME_EXPENSE]} size={20} color={color} />
           ),
         }}
       />
@@ -61,11 +58,7 @@ export default function BottomTab() {
         component={CurrencyConverter}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name={icons[CURRENCY_CONVERT]}
-              size={20}
-              color={color}
-            />
+            <MaterialCommunityIcons name={icons[CURRENCY_CONVERT]} size={20} color={color} />
           ),
         }}
       />
@@ -74,11 +67,7 @@ export default function BottomTab() {
         component={InvestingHint}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name={icons[INVESTING_HINT]}
-              size={20}
-              color={color}
-            />
+            <MaterialCommunityIcons name={icons[INVESTING_HINT]} size={20} color={color} />
           ),
         }}
       />

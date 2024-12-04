@@ -1,19 +1,19 @@
 import React, { createContext, useState } from 'react';
-import { LightTheme, DarkTheme } from '../theme'; // Import themes from theme.js
+import { LightTheme, DarkTheme } from '../theme'; 
 
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [isDarkTheme, setIsDarkTheme] = useState(false); // Initial theme is light
-
-  const theme = isDarkTheme ? DarkTheme : LightTheme; // Choose theme based on state
+  const [isDarkTheme, setIsDarkTheme] = useState(false); // Alustetaan teema-tila
 
   const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme); // Toggle between light and dark themes
+    setIsDarkTheme((prevTheme) => !prevTheme); // Vaihdetaan teemaa
   };
 
+  const theme = isDarkTheme ? DarkTheme : LightTheme; // Valitaan teema tilan perusteella
+
   return (
-    <ThemeContext.Provider value={{ theme, isDarkTheme, toggleTheme }}>
+    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme, theme }}>
       {children}
     </ThemeContext.Provider>
   );
