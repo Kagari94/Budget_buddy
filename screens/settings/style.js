@@ -1,10 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from "react-native";
+import { Calendar } from "react-native-calendars";
+import { Button, TextInput } from "react-native-paper";
 
-export default function Settings() {
-  return (
-    <View style={{flex: 1}}>
-      <Text>Here is basic Currency convert</Text>
+const styles = StyleSheet.create({
+  container: {
 
-    </View>
-  );
-}
+  },
+
+
+  });
+
+  export default styles;
+  
