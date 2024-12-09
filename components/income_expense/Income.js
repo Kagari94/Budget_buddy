@@ -43,6 +43,7 @@ const Income = ({setComponent}) => {
             date: date.dateString,
             income,
             description,
+            category: 'Income'
             };
         saveIncome(newIncome);
         console.log('Income added');

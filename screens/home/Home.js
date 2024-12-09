@@ -5,6 +5,7 @@ import ButtonGroup from '../../components/button_group/ButtonGroup';
 import { SelectedID } from '../../context/sortingContext'
 import { styles } from './style';
 import { useState } from 'react';
+import AddBudget from '../../components/add_budget/AddBudget';
 
 
 export default function Home() {
@@ -13,13 +14,15 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.budgettext}>Budget</Text>
       <View style={styles.expensechart}>
         <ExpensesChart />
       </View>
       <SelectedID.Provider value={[selectedId, setSelectedId]}>
         <View style={styles.buttongroup}>
           <ButtonGroup />
+        </View>
+        <View>
+          <AddBudget/>
         </View>
         <View style={styles.expenselist}>
           <ExpensesList />

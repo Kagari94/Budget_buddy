@@ -1,110 +1,123 @@
 import { PieChart } from "react-native-chart-kit";
-import {useWindowDimensions} from 'react-native';
-import {Data as DATA} from '../../assets/DATA/Data'
-import { View } from "react-native";
+import { useWindowDimensions } from 'react-native';
+import { View} from "react-native";
 import { styles } from "./style";
+import { getExpense } from "../get_data/GetData";
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
-/*
-Food
-Living
-Loans
-Rent
-Transport
-Hobbies
-Savings
-Bills
-Others
-*/
+const chartConfig = {
+  backgroundGradientFrom: "#1E2923",
+  backgroundGradientFromOpacity: 0,
+  backgroundGradientTo: "#08130D",
+  backgroundGradientToOpacity: 0.5,
+  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+  strokeWidth: 3, // optional, default 3
+  barPercentage: 0.5,
+  useShadowColorFromDataset: false // optional
+};
 
-const data = [//Maybe make it so we can call items from function
+
+export default function ExpensesChart() {
+
+
+  const { height, width } = useWindowDimensions();
+  const [dataList, setDataList] = useState([]);
+
+
+  const data = [//find is so that the listing go where they are supposed to go.
     {
-      name: DATA[1].title,
-      expense: DATA[1].expense,
+      name: 'Food',
+      expense: dataList.find(item => item.name === 'Food')?.totalExpense || 0,
       color: "rgb(71, 12, 122)",
-      legendFontColor: "#ffffff",
+      legendFontColor: "black",
       legendFontSize: 15
     },
     {
-      name: DATA[2].title,
-      expense: DATA[2].expense,
+      name: 'Living',
+      expense: dataList.find(item => item.name === 'Living')?.totalExpense || 0,
       color: "rgb(151, 97, 206)",
-      legendFontColor: "#ffffff",
+      legendFontColor: "black",
       legendFontSize: 15
     },
     {
-      name: DATA[3].title,
-      expense: DATA[3].expense,
-      color: "rgb(154, 147, 250)",
-      legendFontColor: "#ffffff",
-      legendFontSize: 15
-    },
-    {
-      name: DATA[4].title,
-      expense: DATA[4].expense,
+      name: 'Rent',
+      expense: dataList.find(item => item.name === 'Rent')?.totalExpense || 0,
       color: "rgb(238, 179, 228)",
-      legendFontColor: "#ffffff",
+      legendFontColor: "black",
       legendFontSize: 15
     },
     {
-      name: DATA[5].title,
-      expense: DATA[5].expense,
+      name: 'Transport',
+      expense: dataList.find(item => item.name === 'Transport')?.totalExpense || 0,
       color: "rgb(220, 184, 255)",
-      legendFontColor: "#ffffff",
+      legendFontColor: "black",
       legendFontSize: 15
     },
     {
-      name: DATA[6].title,
-      expense: DATA[6].expense,
+      name: 'Hobbies',
+      expense: dataList.find(item => item.name === 'Hobbies')?.totalExpense || 0,
       color: "rgba(131, 167, 234, 1)",
-      legendFontColor: "#ffffff",
+      legendFontColor: "black",
       legendFontSize: 15
     },
     {
-      name: DATA[7].title,
-      expense: DATA[7].expense,
+      name: 'Savings',
+      expense: dataList.find(item => item.name === 'Savings')?.totalExpense || 0,
       color: "rgb(169, 236, 227)",
-      legendFontColor: "#ffffff",
+      legendFontColor: "black",
       legendFontSize: 15
     },
     {
-      name: DATA[8].title,
-      expense: DATA[8].expense,
+      name: 'Others',
+      expense: dataList.find(item => item.name === 'Others')?.totalExpense || 0,
       color: "rgb(203, 238, 171)",
-      legendFontColor: "#ffffff",
+      legendFontColor: "black",
       legendFontSize: 15
     }
   ];
 
-  const chartConfig = {
-    backgroundGradientFrom: "#1E2923",
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: "#08130D",
-    backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-    strokeWidth: 3, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false // optional
-  };
 
-export default function ExpensesChart() {
-    
-    const {height, width} = useWindowDimensions();
-    
-    return (
-      <View style={styles.container}>
-        <PieChart
-                data={data}
-                width={width - 20}
-                height={220}
-                chartConfig={chartConfig}
-                accessor={"expense"}//Property in the data object from which the number values are taken
-                backgroundColor={"transparent"}
-                paddingLeft={"15"}
-                center={[10, 0]}
-                avoidFalseZero={true}
-            />
-      </View>
-    );
-  }
+  useFocusEffect(//Get items from storage, and add them together by category.
+    useCallback(() => {
+      const CountData = async () => {
+        const expenses = await getExpense();
+        let tempList = {}
 
-  
+        for (let i = 0; i < expenses.length; i++) {
+          const category = expenses[i].category;
+          const amount = expenses[i].expense;
+
+          if (!tempList[category]) {
+            tempList[category] = { totalExpense: 0, name: category };
+          }
+
+          tempList[category].totalExpense += Number(amount);// convert the amount to Number before adding, else things go south.
+        }
+        setDataList(Object.values(tempList));
+      }
+      //console.log('Data added: ', dataList)
+
+      CountData();
+
+    }, []))
+
+
+  return (
+    <View style={styles.container}>
+      <PieChart
+        data={data}
+        width={width - 20}
+        height={200}
+        chartConfig={chartConfig}
+        accessor={"expense"}//Property in the data object from which the number values are taken
+        backgroundColor={"transparent"}
+        paddingLeft={"15"}
+        center={[10, 0]}
+        //avoidFalseZero={true}
+      />
+    </View>
+
+  );
+}
+

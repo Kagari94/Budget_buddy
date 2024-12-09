@@ -1,5 +1,5 @@
 import { Data } from '../../assets/DATA/Data';//For testing before asyncStorage
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getIncome, getExpense } from '../get_data/GetData';
 
 
 
@@ -7,42 +7,37 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function SortByCategory(selectedCategory) {
 
-    //console.log(selectedCategory)
-    const getExpense = async () => {
-        try {
-            const rawData = await AsyncStorage.getItem('expenses');
-            //console.log('Expense read - ' + rawData);
-            return rawData ? JSON.parse(rawData) : []; // Parse and return data, or empty array if null
-        } catch (error) {
-            console.log('Failed', error);
-            return []; // Return an empty array on error so app wont crash
-        }
-    };
+    const expenseData = await getExpense();
+    const incomeData = await getIncome();
 
-    const DATA = await getExpense();
-
-    const tempList = [];
+    let tempList = [];
 
     //console.log('Selected category - '+selectedCategory)
 
     if (selectedCategory === 'All') {
-        for (i = 0; i < DATA.length; i++) {
-            tempList.push(DATA[i])
+        for (i = 0; i < expenseData.length; i++) {
+            tempList.push(expenseData[i])
+        } for (i = 0; i < incomeData.length; i++) {
+            tempList.push(incomeData[i])
         }
+
     } else {
-        for (let i = 0; i < DATA.length; i++) {
+        for (let i = 0; i < expenseData.length; i++) {
 
             //console.log("Check data:", DATA[i]); // Check items
             //console.log('Category: ', DATA[i].category);
 
-            if (DATA[i].category === selectedCategory) {
-                tempList.push(DATA[i]);
-                console.log('Pushed the item - ', DATA[i])
+            if (expenseData[i].category === selectedCategory) {
+                tempList.push(expenseData[i]);
+                console.log('Pushed the item - ', expenseData[i])
             } else {
-                console.log("No Matching things for:", DATA[i].title);
+                console.log("No Matching things for:", expenseData[i].title);
             }
         }
 
     }
+
+    tempList.sort((a, b) => b.date.localeCompare(a.date));//Sort items by date before returning.
+
     return tempList;
 }
