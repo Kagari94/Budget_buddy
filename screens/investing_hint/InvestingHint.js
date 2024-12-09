@@ -24,7 +24,7 @@ export default function InvestingHint() {
   Index funds offer a straightforward, cost-effective way to invest in the financial markets, making them a popular choice for both novice and experienced investors. Their low costs, diversification, and consistent performance make them an attractive option for long-term growth.
   In this picture you can clearly see, the earlier you begin, the more time compound interest has to work its magic. By starting with smaller contributions earlier in life, you can achieve similar or even greater returns than if you start saving larger amounts later on. 
   This demonstrates how consistent, early investments, especially in low-cost, diversified index funds, can lead to substantial wealth accumulation over time.
-  You can get started with as little as 10$ or 10€/month, but with a larger savings amount, you will accumulate your wealth even faster. If you have the opportunity to save and want a return on your money, start Monthly Savings into a fund. You can use the calculator below to try out how the interest-for-interest phenomenon works.`;
+  You can get started with as little as ten dollars or ten euros/month, but with a larger savings amount, you will accumulate your wealth even faster. If you have the opportunity to save and want a return on your money, start Monthly Savings into a fund. You can use the calculator below to try out how the interest-for-interest phenomenon works.`;
 
   const toggleSpeech = () => {
     if (isSpeaking) {
