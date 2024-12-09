@@ -1,24 +1,43 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View, Button, Image, ScrollView, Alert } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity,TextInput, Alert, Image } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { styles } from './style';
-import { TouchableOpacity } from 'react-native';
 import investingImage from '../../assets/interest.png';
-
-
+import * as Speech from 'expo-speech';
 
 export default function InvestingHint() {
+  const [isSpeaking, setIsSpeaking] = useState(false); // Track if speech is active
   const [showCalculator, setShowCalculator] = useState(false);
-  const [initialAmount, setInitialAmount] = useState('1000'); // Use string initially
-  const [monthlyInvestment, setMonthlyInvestment] = useState('100'); // Use string initially
-  const [interestRate, setInterestRate] = useState('8'); // Use string initially
+  const [initialAmount, setInitialAmount] = useState('1000');
+  const [monthlyInvestment, setMonthlyInvestment] = useState('100');
+  const [interestRate, setInterestRate] = useState('8');
   const [investmentYears, setInvestmentYears] = useState(10);
-  const [error, setError] = useState(''); // State for errors
+  const [error, setError] = useState('');
   const [result, setResult] = useState({
     finalAmount: 0,
     totalInvested: 0,
     interestEarned: 0,
   });
+
+  const text = `Welcome to Investing Tips. Here you will find useful tips to grow your wealth.
+  Investing is one of the best ways to grow your wealth over time. Here, you'll find some tips and a handy calculator to help you understand how compound interest can work for you. 
+  Index funds offer a straightforward, cost-effective way to invest in the financial markets, making them a popular choice for both novice and experienced investors. Their low costs, diversification, and consistent performance make them an attractive option for long-term growth.
+  In this picture you can clearly see, the earlier you begin, the more time compound interest has to work its magic. By starting with smaller contributions earlier in life, you can achieve similar or even greater returns than if you start saving larger amounts later on. 
+  This demonstrates how consistent, early investments, especially in low-cost, diversified index funds, can lead to substantial wealth accumulation over time.
+  You can get started with as little as 10$ or 10€/month, but with a larger savings amount, you will accumulate your wealth even faster. If you have the opportunity to save and want a return on your money, start Monthly Savings into a fund. You can use the calculator below to try out how the interest-for-interest phenomenon works.`;
+
+  const toggleSpeech = () => {
+    if (isSpeaking) {
+      Speech.stop(); // Stop speech
+      setIsSpeaking(false);
+    } else {
+      Speech.speak(text, {
+        onDone: () => setIsSpeaking(false), // Reset state when speech is done
+        onStopped: () => setIsSpeaking(false), // Handle if speech is stopped manually
+      });
+      setIsSpeaking(true);
+    }
+  };
 
   const validateInput = (text, setter) => {
     // Allow numbers, dots, and commas
@@ -36,22 +55,21 @@ export default function InvestingHint() {
       Alert.alert('Invalid Input', 'Please fix the errors before calculating.');
       return;
     }
-  
+
     const annualRate = parseFloat(interestRate) / 100;
     const monthlyRate = annualRate / 12;
     const months = investmentYears * 12;
-  
+
     const initial = parseFloat(initialAmount);
     const monthly = parseFloat(monthlyInvestment);
-  
-    // Compound interest formula
+
     const compoundedInitial = initial * Math.pow(1 + monthlyRate, months);
     const compoundedMonthly = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
-  
+
     const total = compoundedInitial + compoundedMonthly;
-    const totalInvested = initial + (monthly * months);
+    const totalInvested = initial + monthly * months;
     const interestEarned = total - totalInvested;
-  
+
     setResult({
       finalAmount: total.toFixed(2),
       totalInvested: totalInvested.toFixed(2),
@@ -61,7 +79,13 @@ export default function InvestingHint() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Welcome to Investing Tips</Text>
+      <View>
+        <Text style={styles.header}>Welcome to Investing Tips</Text>
+        <TouchableOpacity style={styles.button} onPress={toggleSpeech}>
+          <Text style={styles.buttonText}>{isSpeaking ? 'Pause' : 'Play'}</Text>
+        </TouchableOpacity>
+      </View>
+
       <Text style={styles.description}>
         Investing is one of the best ways to grow your wealth over time. Here, you'll find some tips and a handy calculator to help you understand how compound interest can work for you.
         Index funds offer a straightforward, cost-effective way to invest in the financial markets, making them a popular choice for both novice and experienced investors. Their low costs, diversification, and consistent performance make them an attractive option for long-term growth. In this picture you can clearly see, the earlier you begin, the more time compound interest has to work its magic. By starting with smaller contributions earlier in life, you can achieve similar or even greater returns than if you start saving larger amounts later on. This demonstrates how consistent, early investments, especially in low-cost, diversified index funds, can lead to substantial wealth accumulation over time.
