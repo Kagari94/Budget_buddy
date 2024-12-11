@@ -9,29 +9,31 @@ const PeriodSelector = ({ periods, selectedPeriod, setSelectedPeriod }) => {
 
   return (
     <View style={styles.periodContainer}>
-      {periods.map((period) => (
-        <Button
-          key={period.value}
-          mode={selectedPeriod === period.value ? 'contained' : 'outlined'}
-          onPress={() => setSelectedPeriod(period.value)}
-          style={[
-            styles.periodButton,
-            selectedPeriod === period.value && {
-              backgroundColor: colors.primary,
-            },
-          ]}
-          labelStyle={{
-            fontSize: 14,
-            textAlign: 'center',
-            color:
-              selectedPeriod === period.value
-                ? colors.onPrimary
-                : colors.primary,
-          }}
-        >
-          {period.label}
-        </Button>
-      ))}
+      {periods.map((period) => {
+        const isSelected = selectedPeriod === period.value;
+        return (
+          <Button
+            key={period.value}
+            mode={isSelected ? 'contained' : 'outlined'}
+            onPress={() => setSelectedPeriod(period.value)}
+            style={[
+              styles.periodButton,
+              isSelected && {
+                backgroundColor: colors.primary,
+                borderColor: colors.primary, // Ensure border matches background in 'contained' mode
+              },
+            ]}
+            contentColor={isSelected ? colors.pr : colors.primary}
+            labelStyle={{
+              fontSize: 14,
+              textAlign: 'center',
+              color: isSelected ? colors.onPrimary : colors.primary,
+            }}
+          >
+            {period.label}
+          </Button>
+        );
+      })}
     </View>
   );
 };
