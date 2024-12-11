@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import CurrencyPicker from '../../components/settings/CurrencyPicker';
 import styles from './style';
+import {  useCurrency } from '../../context/currencyContext';
 
 export default function Settings() {
 
-  const [currency, setCurrency] = useState(null);
+
+  const { setCurrency } = useCurrency();
+
 
 
   const handleCurrencySelect = (currency) => {
@@ -14,13 +17,13 @@ export default function Settings() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Here is basic Settings</Text>
-      <Text>Select currency</Text>
-      <CurrencyPicker onCurrencySelect={handleCurrencySelect} />
+      <View style={styles.container}>
+        <Text>Here is basic Settings</Text>
+        <Text>Select currency</Text>
+        <CurrencyPicker onCurrencySelect={handleCurrencySelect} />
 
 
 
-    </View>
+      </View>
   );
 }

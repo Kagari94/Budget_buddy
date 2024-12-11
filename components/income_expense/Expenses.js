@@ -1,10 +1,13 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { View, Text, Alert} from "react-native";
 import { Calendar } from "react-native-calendars";
 import { TextInput, Button } from "react-native-paper";
 import SelectCategory from "./SelectCategory";
+import CurrencyPicker from '../settings/CurrencyPicker'
 import styles from "./style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useCurrency } from "../../context/currencyContext";
+import axios from "axios";
 
 
 
@@ -14,6 +17,50 @@ const Expenses = ({setComponent}) => {
     const[expense,setExpense] = useState();    //Tulot
     const[description, setDescription] = useState();  //Palkka, lahja, pullonpalautus?
     const[selectedCategory, setSelectedCategory] = useState(); // kategoria
+    const[expenseCurrency, setExpenseCurrency] = useState(null); // valuutta, jolla kulut halutaan merkata
+    const { currency: settingsCurrency } = useCurrency(); // asetuksissa valittu valuutta
+    const [convertedAmount, setConvertedAmount] = useState(null); 
+    const [conversionDone, setConversionDone] = useState(false);
+
+    useEffect(() => {
+        if (expenseCurrency && settingsCurrency && expenseCurrency !== settingsCurrency) {
+            convertCurrency();
+        }else{
+            setConversionDone(false);
+
+        }
+    }, [expenseCurrency, settingsCurrency]);
+
+    const convertCurrency = async () => {
+        const endpoint = `currencies/${expenseCurrency.toLowerCase()}.json`;
+        const apiVersion = "v1";
+        const primaryURL = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/${apiVersion}/${endpoint}`;
+       
+
+        try {
+            const response = await axios.get(primaryURL);
+
+
+            if (response.data && response.data[expenseCurrency.toLowerCase()]) {
+                const rate = response.data[expenseCurrency.toLowerCase()][settingsCurrency.toLowerCase()];
+                if (rate) {
+                    const newConvertedAmount = (parseFloat(expense) * rate).toFixed(2);
+                    setConvertedAmount(newConvertedAmount);
+                    setConversionDone(true);
+                } else {
+                    throw new Error("Target currency rate not found");
+                }
+            } else {
+                throw new Error("Invalid data format from primary conversion API");
+            }
+        } catch (error) {
+            console.error("Conversion Error: ", error);
+            Alert.alert("Requested currency not found");
+        }
+
+
+    };
+
 
 
     // haetaan jo tallennetut menot ja lisätään uudet menot
@@ -33,33 +80,48 @@ const Expenses = ({setComponent}) => {
 
     const addExpense = () => {
 
-        if(!date){
+        if (!date) {
             Alert.alert(' You need select a date ')
             return;
         }
 
-        
-        if(!expense){
+        if (!expense) {
             Alert.alert(' you need to set expense')
             return;
         }
 
-        
-        if(!selectedCategory){
+        if (!selectedCategory) {
             Alert.alert(' you need to select category ')
             return;
         }
 
-        const newExpense = { 
+        if (!settingsCurrency) {
+            Alert.alert(' You need to select currency from settings ')
+            return;
+        }
+
+
+        const finalExpense = conversionDone ? convertedAmount : expense;
+
+        const newExpense = {
             date: date.dateString,
-            expense,
+            expense: finalExpense,
             description,
-            category: selectedCategory 
+            category: selectedCategory,
+            currency: settingsCurrency
         };
         saveExpense(newExpense);
-        console.log('Expense added');
-        
+            
+
+
     }
+
+    const handleCurrencySelect = (currency) => {
+        
+        setExpenseCurrency(currency);
+      };
+
+
 
 
 
@@ -73,7 +135,7 @@ const Expenses = ({setComponent}) => {
             <View style={styles.calendar}>
                 <Calendar  onDayPress={dateSelected} />
             </View>
-            <Text style={{color:'white'}}>Selected Date: {date ? date.dateString : "No date selected"}</Text>
+            <Text style={{color:'black'}}>Selected Date: {date ? date.dateString : "No date selected"}</Text>
             <View>
                 <SelectCategory
                     selectedCategory={selectedCategory}
@@ -94,6 +156,10 @@ const Expenses = ({setComponent}) => {
                 onChangeText={description => setDescription(description)}
 
             />
+            <Text style={{ color: 'black'}}>Settings Currency: {settingsCurrency || "No currency selected"}</Text>
+            <Text style={{ color: 'black', marginTop: 10 }}>Converted Amount: {convertedAmount ? `${convertedAmount} ${settingsCurrency}` : "No conversion needed"}</Text>
+
+            <CurrencyPicker onCurrencySelect={handleCurrencySelect}/>
             <Button 
                 style={styles.addButton}
                 icon="plus"
@@ -101,8 +167,6 @@ const Expenses = ({setComponent}) => {
                 onPress={addExpense}>
                 Add
             </Button>
-
-            <Text style={{color:'white'}}>Date:{date ? date.dateString : "-"} Expense: {expense} Description: {description} Category: {selectedCategory}</Text>
             <Button icon="arrow-left-top" title="Back" onPress={() => setComponent(null)} />
         </View>
     )
