@@ -1,12 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Switch } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import CurrencyPicker from '../../components/settings/CurrencyPicker';
 import { ThemeContext } from '../../context/ThemeContext';
 import styles from './style';
+import { useCurrency } from '../../context/currencyContext';
 
 export default function Settings() {
-  const [currency, setCurrency] = useState(null);
+  const { setCurrency } = useCurrency();
+
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   const { colors } = useTheme();
 
@@ -17,7 +19,6 @@ export default function Settings() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Dark Mode Toggle at the Top */}
       <Text style={{ color: colors.onBackground, fontSize: 18, marginBottom: 10 }}>
         App Theme
       </Text>
@@ -26,7 +27,6 @@ export default function Settings() {
         <Switch value={isDarkMode} onValueChange={toggleTheme} />
       </View>
 
-      {/* Currency Section Below */}
       <Text style={{ color: colors.onBackground, fontSize: 18, marginBottom: 10 }}>
         Select Currency
       </Text>
