@@ -1,5 +1,3 @@
-// screens/currency_converter/styles.js
-
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
@@ -13,7 +11,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
     fontWeight: "bold",
-    // color is set in the component using colors.onBackground
   },
   input: {
     height: 50,
@@ -21,7 +18,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
     fontSize: 18,
-    // color and backgroundColor are set in the component
   },
   button: {
     marginBottom: 20,
@@ -55,6 +51,7 @@ const styles = StyleSheet.create({
     minWidth: 50,
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 4,
   },
   chartContainer: {
     marginTop: 20,

@@ -24,7 +24,7 @@ export default function ButtonGroup() {
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? '#663399' : '#665a6f';//Change the colors when theme has been picked
         const color = item.id === selectedId ? 'white' : 'black';
-
+        if(item.id != 'Income'){// Jotta income ei tule palkkiin
         return (
             <Item
                 item={item}
@@ -33,6 +33,9 @@ export default function ButtonGroup() {
                 textColor={color}
             />
         );
+    }else{
+        return null;
+    }
     };
 
     return (

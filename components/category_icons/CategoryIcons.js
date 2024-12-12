@@ -7,4 +7,5 @@ export const buttons = [//Icon list for now
     { id: 'Travel', icon: 'bag-suitcase-outline', color: 'black', size: 20 },
     { id: 'Savings', icon: 'teddy-bear', color: 'black', size: 20 },
     { id: 'Others', icon: 'asterisk', color: 'black', size: 20 },
+    { id: 'Income', icon: 'wallet-plus', color: 'black', size: 20 },
 ]
