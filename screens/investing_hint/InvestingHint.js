@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Text, View, ScrollView, TouchableOpacity,TextInput, Alert, Image } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, TextInput, Alert, Image } from 'react-native';
 import Slider from '@react-native-community/slider';
+import { useTheme } from 'react-native-paper'; // Import useTheme from react-native-paper
 import { styles } from './style';
 import investingImage from '../../assets/interest.png';
 import * as Speech from 'expo-speech';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function InvestingHint() {
+  const { colors } = useTheme(); // Access the current theme colors
   const [isSpeaking, setIsSpeaking] = useState(false); // Track if speech is active
   const [showCalculator, setShowCalculator] = useState(false);
   const [initialAmount, setInitialAmount] = useState('1000');
@@ -78,15 +81,26 @@ export default function InvestingHint() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
       <View>
-        <Text style={styles.header}>Welcome to Investing Tips</Text>
-        <TouchableOpacity style={styles.button} onPress={toggleSpeech}>
-          <Text style={styles.buttonText}>{isSpeaking ? 'Pause' : 'Play'}</Text>
-        </TouchableOpacity>
+        <Text style={[styles.header, { color: colors.onBackground }]}>Welcome to Investing Tips</Text>
+
+        {/* Row with Play Button and Text */}
+        <View style={styles.row}>
+          <TouchableOpacity onPress={toggleSpeech}>
+            <Icon
+              name={isSpeaking ? 'pause-circle' : 'play-circle'}
+              size={60}
+              color={colors.primary}
+            />
+          </TouchableOpacity>
+          <Text style={[styles.playText, { color: colors.onBackground }]}>
+            {isSpeaking ? 'Listening...' : 'Listen to the text'}
+          </Text>
+        </View>
       </View>
 
-      <Text style={styles.description}>
+      <Text style={[styles.description, { color: colors.onBackground }]}>
         Investing is one of the best ways to grow your wealth over time. Here, you'll find some tips and a handy calculator to help you understand how compound interest can work for you.
         Index funds offer a straightforward, cost-effective way to invest in the financial markets, making them a popular choice for both novice and experienced investors. Their low costs, diversification, and consistent performance make them an attractive option for long-term growth. In this picture you can clearly see, the earlier you begin, the more time compound interest has to work its magic. By starting with smaller contributions earlier in life, you can achieve similar or even greater returns than if you start saving larger amounts later on. This demonstrates how consistent, early investments, especially in low-cost, diversified index funds, can lead to substantial wealth accumulation over time.
       </Text>
@@ -95,76 +109,82 @@ export default function InvestingHint() {
         style={styles.image}
       />
 
-      <Text style={styles.description}>
+      <Text style={[styles.description, { color: colors.onBackground }]}>
         You can get started with as little as €10/month, but with a larger savings amount, you will accumulate your wealth even faster. If you have the opportunity to save and want a return on your money, start Monthly Savings into a fund.
         You can use the calculator below to try out how the interest-for-interest phenomenon works
       </Text>
 
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button, { backgroundColor: colors.primary }]}
         onPress={() => setShowCalculator(!showCalculator)}
       >
-        <Text style={styles.buttonText}>
+        <Text style={[styles.buttonText, { color: colors.onPrimary }]}>
           {showCalculator ? 'Hide Calculator' : 'Show Calculator'}
         </Text>
       </TouchableOpacity>
 
       {showCalculator && (
-        <View style={styles.calculator}>
-          <Text style={styles.title}>Interest for Interest Calculator</Text>
+        <View style={[styles.calculator, { backgroundColor: colors.surface, borderColor: colors.primary }]}>
+          <Text style={[styles.title, { color: colors.onBackground }]}>Interest for Interest Calculator</Text>
 
           <View style={styles.inputGroup}>
-            <Text>Start Capital (€):</Text>
+            <Text style={{ color: colors.onBackground }}>Start Capital (€):</Text>
             <TextInput
-              style={styles.input}
-              keyboardType="decimal-pad" 
+              style={[styles.input, { borderColor: colors.primary }]}
+              keyboardType="decimal-pad"
               value={initialAmount}
               onChangeText={(text) => validateInput(text, setInitialAmount)}
             />
           </View>
 
           <View style={styles.inputGroup}>
-            <Text>Monthly Investment (€):</Text>
+            <Text style={{ color: colors.onBackground }}>Monthly Investment (€):</Text>
             <TextInput
-              style={styles.input}
-              keyboardType="decimal-pad" 
+              style={[styles.input, { borderColor: colors.primary }]}
+              keyboardType="decimal-pad"
               value={monthlyInvestment}
               onChangeText={(text) => validateInput(text, setMonthlyInvestment)}
             />
           </View>
 
           <View style={styles.inputGroup}>
-            <Text>Expected Rate of Return (%):</Text>
+            <Text style={{ color: colors.onBackground }}>Expected Rate of Return (%):</Text>
             <TextInput
-              style={styles.input}
-              keyboardType="decimal-pad" 
+              style={[styles.input, { borderColor: colors.primary }]}
+              keyboardType="decimal-pad"
               value={interestRate}
               onChangeText={(text) => validateInput(text, setInterestRate)}
             />
           </View>
 
           <View style={styles.inputGroup}>
-            <Text>Investment Time (Years):</Text>
+            <Text style={{ color: colors.onBackground }}>Investment Time (Years):</Text>
             <Slider
               style={{ width: '100%', height: 40 }}
               minimumValue={1}
               maximumValue={50}
               step={1}
+              value={investmentYears}
               onValueChange={(value) => setInvestmentYears(value)}
+              minimumTrackTintColor={colors.primary}
+              thumbTintColor={colors.primary}
             />
-            <Text>{investmentYears} Years</Text>
+            <Text style={{ color: colors.onBackground }}>{investmentYears} Years</Text>
           </View>
 
-          {error ? <Text style={styles.error}>{error}</Text> : null}
+          {error ? <Text style={[styles.error, { color: colors.error }]}>{error}</Text> : null}
 
-          <TouchableOpacity style={styles.button} onPress={calculateCompoundInterest}>
-            <Text style={styles.buttonText}>CALCULATE</Text>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: colors.primary }]}
+            onPress={calculateCompoundInterest}
+          >
+            <Text style={[styles.buttonText, { color: colors.onPrimary }]}>CALCULATE</Text>
           </TouchableOpacity>
 
-          <View style={styles.resultGroup}>
-            <Text>Capital at the end of the period: {result.finalAmount}€</Text>
-            <Text>Amount of money invested: {result.totalInvested}€</Text>
-            <Text>Amount of interest income: {result.interestEarned}€</Text>
+          <View style={[styles.resultGroup, { backgroundColor: colors.surface, borderColor: colors.primary }]}>
+            <Text style={{ color: colors.onBackground }}>Capital at the end of the period: {result.finalAmount}€</Text>
+            <Text style={{ color: colors.onBackground }}>Amount of money invested: {result.totalInvested}€</Text>
+            <Text style={{ color: colors.onBackground }}>Amount of interest income: {result.interestEarned}€</Text>
           </View>
         </View>
       )}

@@ -25,7 +25,8 @@
     "react-native-paper": "^5.12.5",
     "react-native-picker-select": "^9.3.1",
     "react-native-svg": "15.8.0",
-    "react-native-tts": "^4.1.1"
+    "react-native-tts": "^4.1.1",
+    "react-native-vector-icons": "^10.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
