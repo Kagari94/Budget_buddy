@@ -84,4 +84,20 @@ export const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 14,
   },
+  iconButton: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  row: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'flex-start', 
+    marginVertical: 20, 
+  },
+  playText: {
+    marginLeft: 15, 
+    fontSize: 14, 
+    fontWeight: 'bold', 
+  },
+  
 });
