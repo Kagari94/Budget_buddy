@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { IconButton } from 'react-native-paper';
+import { IconButton, useTheme } from 'react-native-paper';
 import { FlatList } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from "./style";
@@ -20,9 +20,10 @@ const Item = ({ item, onPress, backgroundColor, color }) => {
 
 export default function ButtonGroup() {
     const [selectedId, setSelectedId] = useContext(SelectedID);//Bring this to conext
+    const {colors} = useTheme();
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? '#663399' : '#665a6f';//Change the colors when theme has been picked
+        const backgroundColor = item.id === selectedId ? '#663399' : 'gray';//Change the colors when theme has been picked
         const color = item.id === selectedId ? 'white' : 'black';
         if(item.id != 'Income'){// Jotta income ei tule palkkiin
         return (
