@@ -20,10 +20,19 @@ export const styles = StyleSheet.create({//Style to its own file
         fontSize: 14,
     },
     titleview: {
-        flex: 0.5
-    },
-    expenseview: {
-        flex: 0.5,
+        flex: 1,
         alignItems: 'flex-end'
     },
+    expenseview: {
+        flex: 0.6,
+        alignItems: 'flex-end'
+    },
+    dateview: {
+        flex: 0.6,
+        alignItems: 'flex-start',
+    },
+    iconview: {
+        flex: 0.25,
+        alignItems: 'flex-start'
+    }
 });
