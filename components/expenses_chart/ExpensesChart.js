@@ -1,10 +1,11 @@
 import { PieChart } from "react-native-chart-kit";
 import { useWindowDimensions } from 'react-native';
-import { View} from "react-native";
+import { View } from "react-native";
 import { styles } from "./style";
 import { getExpense } from "../get_data/GetData";
 import { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import { useTheme } from "react-native-paper";
 
 const chartConfig = {
   backgroundGradientFrom: "#1E2923",
@@ -14,13 +15,13 @@ const chartConfig = {
   color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
   strokeWidth: 3, // optional, default 3
   barPercentage: 0.5,
-  useShadowColorFromDataset: false // optional
+  useShadowColorFromDataset: false, // optional
 };
 
 
 export default function ExpensesChart() {
 
-
+  const { colors } = useTheme()
   const { height, width } = useWindowDimensions();
   const [dataList, setDataList] = useState([]);
 
@@ -30,49 +31,49 @@ export default function ExpensesChart() {
       name: 'Food',
       expense: dataList.find(item => item.name === 'Food')?.totalExpense || 0,
       color: "rgb(71, 12, 122)",
-      legendFontColor: "black",
+      legendFontColor: colors.onPrimary,
       legendFontSize: 15
     },
     {
       name: 'Living',
       expense: dataList.find(item => item.name === 'Living')?.totalExpense || 0,
       color: "rgb(151, 97, 206)",
-      legendFontColor: "black",
+      legendFontColor: colors.onPrimary,
       legendFontSize: 15
     },
     {
       name: 'Rent',
       expense: dataList.find(item => item.name === 'Rent')?.totalExpense || 0,
       color: "rgb(238, 179, 228)",
-      legendFontColor: "black",
+      legendFontColor: colors.onPrimary,
       legendFontSize: 15
     },
     {
       name: 'Transport',
       expense: dataList.find(item => item.name === 'Transport')?.totalExpense || 0,
       color: "rgb(220, 184, 255)",
-      legendFontColor: "black",
+      legendFontColor: colors.onPrimary,
       legendFontSize: 15
     },
     {
       name: 'Hobbies',
       expense: dataList.find(item => item.name === 'Hobbies')?.totalExpense || 0,
       color: "rgba(131, 167, 234, 1)",
-      legendFontColor: "black",
+      legendFontColor: colors.onPrimary,
       legendFontSize: 15
     },
     {
       name: 'Savings',
       expense: dataList.find(item => item.name === 'Savings')?.totalExpense || 0,
       color: "rgb(169, 236, 227)",
-      legendFontColor: "black",
+      legendFontColor: colors.onPrimary,
       legendFontSize: 15
     },
     {
       name: 'Others',
       expense: dataList.find(item => item.name === 'Others')?.totalExpense || 0,
       color: "rgb(203, 238, 171)",
-      legendFontColor: "black",
+      legendFontColor: colors.onPrimary,
       legendFontSize: 15
     }
   ];
@@ -114,7 +115,7 @@ export default function ExpensesChart() {
         backgroundColor={"transparent"}
         paddingLeft={"15"}
         center={[10, 0]}
-        //avoidFalseZero={true}
+      //avoidFalseZero={true}
       />
     </View>
 
