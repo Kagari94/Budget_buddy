@@ -8,6 +8,7 @@ import styles from "./style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCurrency } from "../../context/currencyContext";
 import axios from "axios";
+import { useTheme } from 'react-native-paper';
 
 
 
@@ -21,6 +22,10 @@ const Expenses = ({setComponent}) => {
     const { currency: settingsCurrency } = useCurrency(); // asetuksissa valittu valuutta
     const [convertedAmount, setConvertedAmount] = useState(null); 
     const [conversionDone, setConversionDone] = useState(false);
+
+    const { colors } = useTheme();
+
+
 
     useEffect(() => {
         if (expenseCurrency && settingsCurrency && expenseCurrency !== settingsCurrency) {
@@ -71,9 +76,13 @@ const Expenses = ({setComponent}) => {
             expenses.push(newExpense);
             await AsyncStorage.setItem('expenses', JSON.stringify(expenses));
             console.log('Expense saved...');
+            return Promise.resolve(); 
+
 
         }catch (error) {
             console.log('Failed', error);
+            return Promise.reject(error); 
+
             
         }
     }
@@ -110,7 +119,14 @@ const Expenses = ({setComponent}) => {
             category: selectedCategory,
             currency: settingsCurrency
         };
-        saveExpense(newExpense);
+        try {
+            saveExpense(newExpense); 
+            Alert.alert('Expense added successfully');
+            setComponent(null); 
+        } catch (error) {
+            console.error('Failed to save expense: ', error);
+            Alert.alert('Failed to add expense. Please try again.');
+        }
             
 
 
@@ -131,11 +147,11 @@ const Expenses = ({setComponent}) => {
     }
 
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={styles.calendar}>
                 <Calendar  onDayPress={dateSelected} />
             </View>
-            <Text style={{color:'black'}}>Selected Date: {date ? date.dateString : "No date selected"}</Text>
+            <Text style={[styles.label, { color: colors.onBackground }]}>Selected Date: {date ? date.dateString : "No date selected"}</Text>
             <View>
                 <SelectCategory
                     selectedCategory={selectedCategory}
@@ -156,8 +172,8 @@ const Expenses = ({setComponent}) => {
                 onChangeText={description => setDescription(description)}
 
             />
-            <Text style={{ color: 'black'}}>Settings Currency: {settingsCurrency || "No currency selected"}</Text>
-            <Text style={{ color: 'black', marginTop: 10 }}>Converted Amount: {convertedAmount ? `${convertedAmount} ${settingsCurrency}` : "No conversion needed"}</Text>
+            <Text style={[styles.label, { color: colors.onBackground }]}>Settings Currency: {settingsCurrency || "No currency selected"}</Text>
+            <Text style={[styles.label, { color: colors.onBackground }]}>Converted Amount: {convertedAmount ? `${convertedAmount} ${settingsCurrency}` : "No conversion needed"}</Text>
 
             <CurrencyPicker onCurrencySelect={handleCurrencySelect}/>
             <Button 
