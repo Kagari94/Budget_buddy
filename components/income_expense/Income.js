@@ -4,6 +4,8 @@ import { Calendar } from "react-native-calendars";
 import { TextInput, Button } from "react-native-paper";
 import styles from "./style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTheme } from 'react-native-paper';
+
 
 
 
@@ -12,6 +14,9 @@ const Income = ({setComponent}) => {
     const [date, setDate] = useState(null);  //Päivämäärä
     const[income,setIncome] = useState();    //Tulot
     const[description, setDescription] = useState();  //Palkka, lahja, pullonpalautus?
+
+    const { colors } = useTheme();
+
 
     const saveIncome = async (newIncome) => {
         try{
@@ -45,10 +50,18 @@ const Income = ({setComponent}) => {
             description,
             category: 'Income'
             };
-        saveIncome(newIncome);
-        console.log('Income added');
         
-    }
+        try{
+            saveIncome(newIncome);
+            Alert.alert('Income added successfully');
+            setComponent(null);
+        }catch (error){
+            console.log('Failed to save income: ', error);
+            Alert.alert('Failed to add income. please try again ')
+            
+        }
+        
+    };
 
 
     function dateSelected(day) {
@@ -56,12 +69,12 @@ const Income = ({setComponent}) => {
         }
 
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
 
             <View style={styles.calendar}>
                 <Calendar  onDayPress={dateSelected} />
             </View>
-            <Text style={{color:'white'}}>Selected Date: {date ? date.dateString : "No date selected"}</Text>
+            <Text style={[styles.label, { color: colors.onBackground }]}>Selected Date: {date ? date.dateString : "No date selected"}</Text>
             <TextInput 
                 style={styles.textInput}
                 mode="outlined"
@@ -84,7 +97,6 @@ const Income = ({setComponent}) => {
                 Add
             </Button>
 
-            <Text style={{color:'white'}}>Date:{date ? date.dateString : "-"} Income: {income} Description: {description}</Text>
             <Button icon="arrow-left-top" title="Back" onPress={() => setComponent(null)} />
         </View>
     )
