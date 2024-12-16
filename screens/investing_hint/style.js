@@ -39,11 +39,13 @@ export const styles = StyleSheet.create({
   },
   inputGroup: {
     marginBottom: 20,
+    
    
   },
   input: {
     borderWidth: 1,
     borderColor: '#5e5ce6', 
+   
    
     padding: 10,
     borderRadius: 5,
