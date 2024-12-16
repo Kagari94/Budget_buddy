@@ -1,3 +1,5 @@
+// InvestingHint.js
+
 import React, { useState } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, TextInput, Alert, Image } from 'react-native';
 import Slider from '@react-native-community/slider';
@@ -8,7 +10,7 @@ import * as Speech from 'expo-speech';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function InvestingHint() {
-  const { colors } = useTheme(); // Access the current theme colors
+  const { colors, dark } = useTheme(); // Access the current theme colors and mode
   const [isSpeaking, setIsSpeaking] = useState(false); // Track if speech is active
   const [showCalculator, setShowCalculator] = useState(false);
   const [initialAmount, setInitialAmount] = useState('1000');
@@ -105,7 +107,7 @@ export default function InvestingHint() {
         Index funds offer a straightforward, cost-effective way to invest in the financial markets, making them a popular choice for both novice and experienced investors. Their low costs, diversification, and consistent performance make them an attractive option for long-term growth. In this picture you can clearly see, the earlier you begin, the more time compound interest has to work its magic. By starting with smaller contributions earlier in life, you can achieve similar or even greater returns than if you start saving larger amounts later on. This demonstrates how consistent, early investments, especially in low-cost, diversified index funds, can lead to substantial wealth accumulation over time.
       </Text>
       <Image
-        source={require('../../assets/interest.png')}
+        source={investingImage}
         style={styles.image}
       />
 
@@ -127,36 +129,55 @@ export default function InvestingHint() {
         <View style={[styles.calculator, { backgroundColor: colors.surface, borderColor: colors.primary }]}>
           <Text style={[styles.title, { color: colors.onBackground }]}>Interest for Interest Calculator</Text>
 
+          {/* Start Capital Input */}
           <View style={styles.inputGroup}>
             <Text style={{ color: colors.onBackground }}>Start Capital (€):</Text>
             <TextInput
-              style={[styles.input, { borderColor: colors.primary }]}
+              style={[
+                styles.input,
+                { borderColor: colors.primary, color: dark ? '#ffffff' : '#000000' } // Manually set text color based on theme
+              ]}
               keyboardType="decimal-pad"
               value={initialAmount}
               onChangeText={(text) => validateInput(text, setInitialAmount)}
+              placeholder="e.g., 1000"
+              placeholderTextColor={dark ? '#cccccc' : '#666666'} // Adjust placeholder color based on theme
             />
           </View>
 
+          {/* Monthly Investment Input */}
           <View style={styles.inputGroup}>
             <Text style={{ color: colors.onBackground }}>Monthly Investment (€):</Text>
             <TextInput
-              style={[styles.input, { borderColor: colors.primary }]}
+              style={[
+                styles.input,
+                { borderColor: colors.primary, color: dark ? '#ffffff' : '#000000' } // Manually set text color based on theme
+              ]}
               keyboardType="decimal-pad"
               value={monthlyInvestment}
               onChangeText={(text) => validateInput(text, setMonthlyInvestment)}
+              placeholder="e.g., 100"
+              placeholderTextColor={dark ? '#cccccc' : '#666666'} // Adjust placeholder color based on theme
             />
           </View>
 
+          {/* Expected Rate of Return Input */}
           <View style={styles.inputGroup}>
             <Text style={{ color: colors.onBackground }}>Expected Rate of Return (%):</Text>
             <TextInput
-              style={[styles.input, { borderColor: colors.primary }]}
+              style={[
+                styles.input,
+                { borderColor: colors.primary, color: dark ? '#ffffff' : '#000000' } // Manually set text color based on theme
+              ]}
               keyboardType="decimal-pad"
               value={interestRate}
               onChangeText={(text) => validateInput(text, setInterestRate)}
+              placeholder="e.g., 8"
+              placeholderTextColor={dark ? '#cccccc' : '#666666'} // Adjust placeholder color based on theme
             />
           </View>
 
+          {/* Investment Time Slider */}
           <View style={styles.inputGroup}>
             <Text style={{ color: colors.onBackground }}>Investment Time (Years):</Text>
             <Slider
@@ -172,8 +193,10 @@ export default function InvestingHint() {
             <Text style={{ color: colors.onBackground }}>{investmentYears} Years</Text>
           </View>
 
+          {/* Error Message */}
           {error ? <Text style={[styles.error, { color: colors.error }]}>{error}</Text> : null}
 
+          {/* Calculate Button */}
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.primary }]}
             onPress={calculateCompoundInterest}
@@ -181,6 +204,7 @@ export default function InvestingHint() {
             <Text style={[styles.buttonText, { color: colors.onPrimary }]}>CALCULATE</Text>
           </TouchableOpacity>
 
+          {/* Result Display */}
           <View style={[styles.resultGroup, { backgroundColor: colors.surface, borderColor: colors.primary }]}>
             <Text style={{ color: colors.onBackground }}>Capital at the end of the period: {result.finalAmount}€</Text>
             <Text style={{ color: colors.onBackground }}>Amount of money invested: {result.totalInvested}€</Text>
