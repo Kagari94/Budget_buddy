@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     budgetview: {
         padding: 16,
-        margin: 20,
+        margin: 10,
         borderRadius: 8,
         alignItems: 'center',
         shadowColor: 'gray',
