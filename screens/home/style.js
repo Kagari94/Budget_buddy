@@ -12,7 +12,8 @@ export const styles = StyleSheet.create({
         color: "white"    
     },
     buttongroup: {
-        flex: 0.1,
+        flex: 0.15,
+        marginTop: 50,
         paddingTop: 5,
         paddingLeft: 15,
         paddingRight: 15

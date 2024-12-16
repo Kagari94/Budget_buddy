@@ -5,6 +5,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useTheme } from "react-native-paper";
 import React from "react";
 import { useCurrency } from "../../context/currencyContext";
+import { styles } from './style'
 
 export default function AddBudget() {
 
@@ -50,10 +51,11 @@ export default function AddBudget() {
 
     }, [countedData])
     )
-
     return (
-        <View>
-            <Text style={{ color: textColor ? 'red' : colors.onPrimary , fontSize: 20, alignSelf: 'center' }}>{text} : {Math.abs(countedData).toFixed(2)} {settingsCurrency}</Text>
+        <View style={[styles.budgetview, {backgroundColor: colors.surface}]}>
+            <Text style={[styles.text, {color: textColor ? 'red' : colors.onPrimary,}]}>
+                {text}: {Math.abs(countedData).toFixed(2)} {settingsCurrency}
+            </Text>
         </View>
     )
 }
