@@ -109,7 +109,7 @@ export default function ExpensesChart() {
       <PieChart
         data={data}
         width={width - 20}
-        height={200}
+        height={250}
         chartConfig={chartConfig}
         accessor={"expense"}//Property in the data object from which the number values are taken
         backgroundColor={"transparent"}

@@ -1,42 +1,54 @@
+// ButtonGroup.js
+
 import React, { useContext } from 'react';
 import { IconButton, useTheme } from 'react-native-paper';
 import { FlatList } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from "./style";
 import { SelectedID } from '../../context/sortingContext';
-import { buttons } from '../category_icons/CategoryIcons'//Use buttons from different file, icons are there too
-
-const Item = ({ item, onPress, backgroundColor, color }) => {
+import { buttons } from '../category_icons/CategoryIcons';
+// Item Component
+const Item = ({ item, onPress, backgroundColor, iconColor }) => {
     return (
         <IconButton
             icon={item.icon}
             onPress={onPress}
-            backgroundColor={backgroundColor}
-            textColor={color}
+            style={[styles.iconButton, { backgroundColor }]} 
+            color={iconColor} // Set icon color
+            size={24} // Optional: Adjust size as needed
         />
     );
 };
 
-
 export default function ButtonGroup() {
-    const [selectedId, setSelectedId] = useContext(SelectedID);//Bring this to conext
-    const {colors} = useTheme();
+    const [selectedId, setSelectedId] = useContext(SelectedID);
+    const theme = useTheme();
+    const { colors, dark } = theme; //
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? '#663399' : 'gray';//Change the colors when theme has been picked
-        const color = item.id === selectedId ? 'white' : 'black';
-        if(item.id != 'Income'){// Jotta income ei tule palkkiin
-        return (
-            <Item
-                item={item}
-                onPress={() => setSelectedId(item.id)}
-                backgroundColor={backgroundColor}
-                textColor={color}
-            />
-        );
-    }else{
-        return null;
-    }
+        const isSelected = item.id === selectedId;
+
+        const backgroundColor = isSelected ? colors.primary : colors.surface;
+
+        const iconColor = isSelected
+            ? dark // If dark mode
+                ? colors.onPrimary // Use theme's onPrimary (white)
+                : '#ffffff' // If light mode, override to white for better contrast
+            : colors.primary;
+
+        // Exclude the 'Income' category from rendering
+        if (item.id !== 'Income') {
+            return (
+                <Item
+                    item={item}
+                    onPress={() => setSelectedId(item.id)}
+                    backgroundColor={backgroundColor}
+                    iconColor={iconColor}
+                />
+            );
+        } else {
+            return null; 
+        }
     };
 
     return (
@@ -48,6 +60,8 @@ export default function ButtonGroup() {
                     keyExtractor={item => item.id}
                     extraData={selectedId}
                     horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.flatListContent}
                 />
             </SafeAreaView>
         </SafeAreaProvider>

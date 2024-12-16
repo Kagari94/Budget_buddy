@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     },
     buttongroup: {
         flex: 0.1,
+        marginTop: 50,
         paddingTop: 5,
         paddingLeft: 15,
         paddingRight: 15

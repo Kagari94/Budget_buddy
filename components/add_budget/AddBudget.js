@@ -50,10 +50,27 @@ export default function AddBudget() {
 
     }, [countedData])
     )
-
     return (
-        <View>
-            <Text style={{ color: textColor ? 'red' : colors.onPrimary , fontSize: 20, alignSelf: 'center' }}>{text} : {Math.abs(countedData).toFixed(2)} {settingsCurrency}</Text>
+        <View style={{
+            backgroundColor: colors.surface,
+            padding: 16,
+            margin: 20,
+            borderRadius: 8,
+            alignItems: 'center',
+            shadowColor: colors.onSurface,
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 4,
+        }}>
+            <Text style={{
+                color: textColor ? 'red' : colors.onPrimary,
+                fontSize: 24,
+                fontWeight: 'bold',
+                textAlign: 'center',
+            }}>
+                {text}: {Math.abs(countedData).toFixed(2)} {settingsCurrency}
+            </Text>
         </View>
     )
 }
