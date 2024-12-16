@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, Switch, Alert } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import CurrencyPicker from '../../components/settings/CurrencyPicker';
@@ -9,9 +9,10 @@ import { clearStorage } from '../../components/settings/ResetApp';
 
 export default function Settings() {
   const { setCurrency } = useCurrency();
-
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   const { colors } = useTheme();
+
+  const { currency: settingsCurrency } = useCurrency();
 
   const handleCurrencySelect = (selectedCurrency) => {
     console.log('Selected:', selectedCurrency);
@@ -49,6 +50,9 @@ export default function Settings() {
       </Text>
       <CurrencyPicker onCurrencySelect={handleCurrencySelect} onResetApp={handleResetApp}
       />
+      <Text style={{ color: colors.onBackground, fontSize: 18, marginBottom: 10 }}>
+      Current Currency: {settingsCurrency || "No currency selected"}
+      </Text>
     </View>
   );
 }
