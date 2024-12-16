@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { useTheme, IconButton } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
 import axios from 'axios';
@@ -7,11 +7,12 @@ import pickerSelectStyles from '../../screens/currency_converter/pickerStyles.js
 
 
 
-const CurrencyPicker = ({ onCurrencySelect }) => {
+const CurrencyPicker = ({ onCurrencySelect, onResetApp }) => {
     const [currencies, setCurrencies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedCurrency, setSelectedCurrency] = useState(null);
     const { colors } = useTheme();
+    const isFirstSelection = useRef(true);
 
     const chosenCurrencies = [
       'usd', 'eur', 'jpy', 'gbp', 'aud', 'cad', 'chf', 'cny', 'hkd', 'nzd',
@@ -77,6 +78,29 @@ const CurrencyPicker = ({ onCurrencySelect }) => {
         paddingLeft: 60,
       },
     };
+
+    const handleCurrencyChange = (value) => {
+      if(isFirstSelection.current){
+        isFirstSelection.current = false;
+        setSelectedCurrency(value);
+        onCurrencySelect(value);
+      }else if(onResetApp){
+        Alert.alert('Change default currency',
+          'Changing the currency will reset the app.',
+          [
+            {text:'Cancel', style: 'cancel'},
+            {text:'Reset',style:'destructive',
+              onPress: ()=>{
+                console.log('App reset');
+                onResetApp();
+                setSelectedCurrency(value);
+                onCurrencySelect(value);  
+              },
+            },
+          ]
+        );
+      }
+    };
   
 
    
@@ -84,11 +108,7 @@ const CurrencyPicker = ({ onCurrencySelect }) => {
     return (
        <View style={styles.container}> 
         <RNPickerSelect
-          onValueChange={(value) => {
-            console.log('Selected value:', value);
-            setSelectedCurrency(value);
-            onCurrencySelect(value);
-          }}
+          onValueChange={handleCurrencyChange}
           items={currencies}
           style={customizedPickerStyles}
           value={selectedCurrency}
