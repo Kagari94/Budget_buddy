@@ -185,7 +185,6 @@ export default function InvestingHint() {
               minimumValue={1}
               maximumValue={50}
               step={1}
-              value={investmentYears}
               onValueChange={(value) => setInvestmentYears(value)}
               minimumTrackTintColor={colors.primary}
               thumbTintColor={colors.primary}
