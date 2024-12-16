@@ -172,7 +172,7 @@ const Expenses = ({setComponent}) => {
                 onChangeText={description => setDescription(description)}
 
             />
-            <Text style={[styles.label, { color: colors.onBackground }]}>Settings Currency: {settingsCurrency || "No currency selected"}</Text>
+            <Text style={[styles.label, { color: colors.onBackground }]}>Default Currency: {settingsCurrency || "No currency selected"}</Text>
             <Text style={[styles.label, { color: colors.onBackground }]}>Converted Amount: {convertedAmount ? `${convertedAmount} ${settingsCurrency}` : "No conversion needed"}</Text>
 
             <CurrencyPicker onCurrencySelect={handleCurrencySelect}/>

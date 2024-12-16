@@ -53,7 +53,7 @@ export default function AddBudget() {
 
     return (
         <View>
-            <Text style={{ color: textColor ? 'red' : colors.onPrimary , fontSize: 20, alignSelf: 'center' }}>{text} : {Math.abs(countedData)} {settingsCurrency}</Text>
+            <Text style={{ color: textColor ? 'red' : colors.onPrimary , fontSize: 20, alignSelf: 'center' }}>{text} : {Math.abs(countedData).toFixed(2)} {settingsCurrency}</Text>
         </View>
     )
 }
